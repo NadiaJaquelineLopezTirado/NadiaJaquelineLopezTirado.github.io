@@ -1,0 +1,659 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Pr&aacute;ctica 4: Convoluci&oacute;n y Correlaci&oacute;n de se&ntilde;ales en tiempo continuo</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-05-07"><meta name="DC.source" content="practica4_e.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Pr&aacute;ctica 4: Convoluci&oacute;n y Correlaci&oacute;n de se&ntilde;ales en tiempo continuo</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Portada</a></li><li><a href="#3">Objetivos</a></li><li><a href="#4">Introducci&oacute;n</a></li><li><a href="#21">Desarrollo</a></li><li><a href="#22">PR04 1</a></li><li><a href="#23">Analiticamente la funci&oacute;n de la convoluci&oacute;n es</a></li><li><a href="#24">PR04 3</a></li><li><a href="#25">Analiticamente la funci&oacute;n de la convoluci&oacute;n es</a></li><li><a href="#26">PR06 e</a></li><li><a href="#27">Analiticamente la funci&oacute;n de la correlaci&oacute;n es</a></li><li><a href="#28">PR06 f</a></li><li><a href="#29">Analiticamente la funci&oacute;n de la correlaci&oacute;n es</a></li></ul></div><h2 id="1">Portada</h2><p><img vspace="5" hspace="5" src="Portada_practica4.png" alt=""> </p><h2 id="3">Objetivos</h2><p>Los objetivos son los sigueintes:</p><div><ul><li>Conocer m&eacute;todos b&aacute;sicos de integraci&oacute;n num&eacute;rica</li><li>Manipulaci&oacute;n de instrucciones en MATLAB</li><li>Simular convoluciones y correlaciones de se&ntilde;ales continuas</li></ul></div><h2 id="4">Introducci&oacute;n</h2><p><b>M&eacute;todos num&eacute;ricos de integraci&oacute;n</b> El teorema fundamental del c&aacute;lculo (en una de sus versiones) se basa en encontrar una antiderivada <img src="practica4_e_eq08597826192214703288.png" alt="$F$">. Conociendo dicha antiderivada se puede encontrar la integral definida de otra funci&oacute;n <img src="practica4_e_eq17541265140556510133.png" alt="$f=F'$">. El teorema fundamental del c&aacute;lculo dice:</p><p>Si <img src="practica4_e_eq17663307419741296505.png" alt="$f(x)$"> es integrable, y <img src="practica4_e_eq05340592637791817947.png" alt="$\frac{dF(x)}{dx}=f(x)$">, entonces:</p><p><img src="practica4_e_eq16817905199163689891.png" alt="$$\int_{a}^{b}f(x)dx=F(b)-F(a)$$"></p><p>Sin embargo, a veces con los m&eacute;todos de integraci&oacute;n conocidos (cambio de variable, integraci&oacute;n por partes, fracciones parciales, sustituci&oacute;n trigonom&eacute;trica) no es posible hallar una antiderivada <img src="practica4_e_eq12375577266444837934.png" alt="$F(x)$">, sin embargo, el objetivo de la integraci&oacute;n es geom&eacute;tricamente hallar el &aacute;rea encerrada por la curva de la funci&oacute;n <img src="practica4_e_eq17663307419741296505.png" alt="$f(x)$"> la recta <img src="practica4_e_eq13813501899789052836.png" alt="$y=0$"> y las rectas <img src="practica4_e_eq17610628322324345933.png" alt="$x=a$"> y <img src="practica4_e_eq17143918320047229044.png" alt="$x=b$">. Y para ello se pueden utilizar diferentes m&eacute;todos, sin necesidad de hallar una antiderivada <img src="practica4_e_eq12375577266444837934.png" alt="$F(x)$">. Estos son los m&eacute;todos num&eacute;ricos.</p><p>Como ejemplo, tenemos la funci&oacute;n <img src="practica4_e_eq17947156488620266187.png" alt="$f(x)=e^{-x^{2}}$">. De acuerdo con el teorema fundamental del c&aacute;lculo,su integral de <img src="practica4_e_eq01858952829167753919.png" alt="$x=-1$"> a <img src="practica4_e_eq05225673900080308212.png" alt="$x=1$"> ser&iacute;a definida como:</p><p><img src="practica4_e_eq17632881593258709632.png" alt="$$\int_{-1}^{1}f(x)dx=\int_{-1}^{1}e^{-x^{2}}dx=F(1)-F(-1)$$"></p><p>con <img src="practica4_e_eq17361572515993448998.png" alt="$$ \frac{dF(x)}{dx}=f(x) $$"> .</p><p>Pero, &iquest;qui&eacute;n es <img src="practica4_e_eq12375577266444837934.png" alt="$F(x)$"> (la antiderivada)? La respuesta es que no existe como funci&oacute;n elemental; por tanto por los m&eacute;todos tradicionales no se puede hallar la integral de esta funci&oacute;n. Sin embargo el resultado de esta integral es aproximadamente 1.4936, determinandose por m&eacute;todos num&eacute;ricos.</p><p>La t&eacute;cnica que se utiliza para integrar en este caso es por medio de aproximaci&oacute;n a la funci&oacute;n mediante polinomios lo suficientemente parecidos (con el menos error posible) e integrarlos.</p><p><b>F&oacute;rmulas cerradas de Newton-Cotes</b></p><p>Supongamos que tenemos la siguiente integral <img src="practica4_e_eq11518683629591826499.png" alt="$\int_{a}^{b}f(x)dx$">, y no es posible encontrar la antiderivada <img src="practica4_e_eq12375577266444837934.png" alt="$F(x)$">. Una forma de integrar es mediante la aproximaci&oacute;n a <img src="practica4_e_eq17663307419741296505.png" alt="$f(x)$"> con un polinomio de interpolaci&oacute;n de Langrage. La teor&iacute;a de Lagrange dice que si <img src="practica4_e_eq17663307419741296505.png" alt="$f(x)$"> es integrable n veces, se puede hallar un polinomio que interpole a dicha funci&oacute;n (la corte n veces en un intervalo) m&aacute;s un t&eacute;rmino de error. Un polinomio de interpolaci&oacute;n de Lagrange se ve de la siguiente forma:</p><p><img src="practica4_e_eq15388428714948032814.png" alt="$$ f(x)=P(x)+\frac{f^{(n+1)}\xi (x)}{(n+1)!}(x-x_{0})(x-x_{1})\cdots&#xA;(x-x_{i}) $$"></p><p>con <img src="practica4_e_eq08570393432990432891.png" alt="$x\in [a,b]$"> y <img src="practica4_e_eq02777080431347765210.png" alt="$x_{i}\in [a,b]$"></p><p>Si se integra, se tiene la f&oacute;rmula cerrada de (n+1) puntos de Newton-Cotes. (Ver gr&aacute;fica). Donde por regla general:</p><div><ul><li><img src="practica4_e_eq01056269978726897643.png" alt="$x_{0}=a$"></li><li><img src="practica4_e_eq00331310322815514266.png" alt="$x_{n}=b$"></li><li><img src="practica4_e_eq14663764134541110566.png" alt="$h=\frac{b-a}{n}$"> -- (paso)</li><li><img src="practica4_e_eq07698017641151756797.png" alt="$x_{i}=x_{0}+ih$"> con <img src="practica4_e_eq15286095687738613400.png" alt="$i=0,1, \cdots ,n$"></li></ul></div><p>Dependiendo el grado n del polinomio, se obtiene lo que se conoce como Regla del trapecio (n=1) o primer f&oacute;rmula cerrada de Newton-Cotes, Regla de Simpson (n=2) o segunda f&oacute;rmula cerrada de Newton-Cotes, y Regla de los tres octavos de Simpson (n=3).</p><p><b>Regla del trapecio (n=1)</b></p><p><img src="practica4_e_eq14647083425008290344.png" alt="$$\int_{x_{0}}^{x_{1}}f(x)dx=\frac{h}{2}\left [ f(x_{0})+f(x_{1}) \right ]&#xA;-\left(\frac{h^{3}}{12}\right)f^{(2)}(\xi)$$"></p><p>con <img src="practica4_e_eq08603096453076732426.png" alt="$x_{0} <\xi < x_{1}$"></p><p>Donde:</p><div><ul><li><img src="practica4_e_eq01056269978726897643.png" alt="$x_{0}=a$"></li><li><img src="practica4_e_eq17811075688672136472.png" alt="$x_{1}=b$"></li><li><img src="practica4_e_eq04610332200503056764.png" alt="$h=b-a$"> -- (paso)</li><li><img src="practica4_e_eq16179145327951120899.png" alt="$x_{i}=a+i(b-a)$"> con <img src="practica4_e_eq11424036590008830977.png" alt="$i=0,1$"></li></ul></div><p><b>Regla de Simpson (n=2)</b></p><p><img src="practica4_e_eq00020618511167251742.png" alt="$$\int_{x_{0}}^{x_{2}}f(x)dx=\frac{h}{3}\left [ f(x_{0})+4f(x_{1})+f(x_{2}) \right ]&#xA;-\left(\frac{h^{5}}{90}\right)f^{(4)}(\xi)$$"></p><p>con <img src="practica4_e_eq15134870749431585011.png" alt="$x_{0} <\xi < x_{2}$"></p><p>Donde:</p><div><ul><li><img src="practica4_e_eq01056269978726897643.png" alt="$x_{0}=a$"></li><li><img src="practica4_e_eq00926360123370829447.png" alt="$x_{2}=b$"></li><li><img src="practica4_e_eq09636629550107206880.png" alt="$h=\frac{b-a}{2}$"> -- (paso)</li><li><img src="practica4_e_eq01242584725144056296.png" alt="$x_{i}=a+ih$"> con <img src="practica4_e_eq01823414822277661546.png" alt="$i=0,1,2$"></li><li><img src="practica4_e_eq10737469829672842624.png" alt="$x_{1}=a+\frac{b-a}{2}=\frac{b+a}{2}$"> con <img src="practica4_e_eq01823414822277661546.png" alt="$i=0,1,2$"></li></ul></div><p><b>Regla de los tres octavos de Simpson (n=3)</b></p><p><img src="practica4_e_eq14063740810588144764.png" alt="$$ \int_{x_{0}}^{x_{3}}f(x)dx=\frac{3}{8}h\left [ f(x_{0})+3f(x_{1})+3f(x_{2})+f(x_{3}) \right ]&#xA;-\left(\frac{3h^{5}}{80}\right)f^{(4)}(\xi)$$"></p><p>con <img src="practica4_e_eq01841757984722672205.png" alt="$x_{0} <\xi < x_{3}$"></p><p>Donde:</p><div><ul><li><img src="practica4_e_eq01056269978726897643.png" alt="$x_{0}=a$"></li><li><img src="practica4_e_eq18424229842987356267.png" alt="$x_{3}=b$"></li><li><img src="practica4_e_eq09593670058623902766.png" alt="$h=\frac{b-a}{3}$"> -- (paso)</li><li><img src="practica4_e_eq03782650388826138079.png" alt="$x_{i}=a+i\frac{b-a}{3}$"> con <img src="practica4_e_eq10052648702682174882.png" alt="$i=0,1,2,3$"></li><li><img src="practica4_e_eq16679957168420754673.png" alt="$x_{1}=a+\frac{b-a}{3}=\frac{2a+b}{3}$"></li><li><img src="practica4_e_eq05874132235121705144.png" alt="$x_{2}=a+\frac{2b-2a}{3}=\frac{2b+a}{3}$"></li></ul></div><p><b>EJEMPLO</b></p><p>Con la funci&oacute;n <img src="practica4_e_eq17947156488620266187.png" alt="$f(x)=e^{-x^{2}}$">, los tres m&eacute;todos anteriores se desarrollan as&iacute;;</p><p><i>Regla del trapecio</i></p><p><img src="practica4_e_eq13997870368203949111.png" alt="$$ \int_{-1}^{1}e^{-x^{2}}dx= \frac{2}{2} \left [ e^{-1}+e^{-1} \right ]&#xA;- \frac{8}{12} \left [ -2e^{-\xi ^{2}}(1-2\xi^{2}) \right ]&#xA;=0.7357+ \frac{4}{3}e^{-\xi^{2}}(1-2\xi^{2})$$"></p><p>con <img src="practica4_e_eq14768988684534621960.png" alt="$$ -1<\xi<1 $$"></p><p><i>Regla de Simpson</i></p><p><img src="practica4_e_eq16196918746991155570.png" alt="$$ \int_{-1}^{1}e^{-x^{2}}dx= \frac{1}{3} \left [ e^{-1}+4e^{0}+e^{-2}&#xA;\right ] - \frac{1}{90} \left [ -4e^{-\xi^{2}}(-4\xi^{4}+12\xi^{2}-3)&#xA;\right ] $$"></p><p><img src="practica4_e_eq11433309758718154000.png" alt="$$ = 1.5785+ \frac{2}{45}e^{-\xi^{2}}(-4\xi^{4}+12\xi^{2}-3)) $$"></p><p>con <img src="practica4_e_eq04540950445795077714.png" alt="$$ -1 <\xi <1 $$"></p><p><i>Regla de los tres octavos de Simpson</i></p><p><img src="practica4_e_eq17328443748818626115.png" alt="$$ \int_{-1}^{1}e^{-x^{2}}dx=\frac{3}{8}(\frac{2}{3})\left [&#xA;e^{-1}+3e^{-\frac{1}{4}}+3e^{-\frac{1}{4}}+e^{-1} \right ]&#xA;-\frac{3}{80}(\frac{2}{3})^{5}\left [ -4e^{-\xi^{2}}(-4\xi^{4}+12\xi^{2}&#xA;-3)\right ] $$"></p><p><img src="practica4_e_eq08584693120235332921.png" alt="$$ = 1.5261+\frac{8}{405}e^{-\xi^{2}}(-4\xi^{4}+12\xi^{2}-3))$$"></p><p>con <img src="practica4_e_eq04540950445795077714.png" alt="$$ -1 <\xi <1 $$"></p><p><b>F&oacute;rmulas cerradas de Newton-Cotes compuestas</b></p><p>Son una extensi&oacute;n de las f&oacute;rmulas cerradas de Newton-Cotes, en las que una funci&oacute;n se divide en m&uacute;ltiples intervalos y no solo uno, y a cada intervalo se le aplica la regla del trapecio, de Simpson, de tres octavos de Simpson, etc&eacute;tera.</p><p><b>Regla compuesta del trapecio</b></p><p><img src="practica4_e_eq18444710978998812391.png" alt="$$\int_{a}^{b}f(x)dx=\frac{h}{2}\left [&#xA;f(a)+2\sum_{j=1}^{n-1}f(x_{j})+f(b)\right ]&#xA;-\frac{b-a}{12}h^{2}f^{(2)}(\mu)$ con $\mu\in(a,b)$$"></p><div><ul><li><img src="practica4_e_eq08984225997457563733.png" alt="$n$"> - n&uacute;mero de subintervalos</li><li><img src="practica4_e_eq14663764134541110566.png" alt="$h=\frac{b-a}{n}$"> - paso</li><li><img src="practica4_e_eq06634274344176508331.png" alt="$x_{j}=a+jh\;\;j=0,1,2,\cdots,n$"></li></ul></div><p><b>Regla compuesta de Simpson</b></p><p><img src="practica4_e_eq00151081026128085419.png" alt="$$\int_{a}^{b}f(x)dx=\frac{h}{3}\left [ f(a)+2\sum_{j=1}^{(n/2)-1}f(x_{2j})&#xA;+4\sum_{j=1}^{n/2}f(x_{2j-1})+f(b) \right ]&#xA;-\left(\frac{b-a}{180}\right)h^{4}f^{(4)}(\mu)$ con $\mu\in(a,b)$$"></p><div><ul><li><img src="practica4_e_eq08984225997457563733.png" alt="$n$"> par - n&uacute;mero de subintervalos</li><li><img src="practica4_e_eq14663764134541110566.png" alt="$h=\frac{b-a}{n}$"> - paso</li><li><img src="practica4_e_eq01889445865402851942.png" alt="$x_{j}=a+jh\;\;j=0,1,\cdots,n$"></li></ul></div><p><i><b>Ejemplo</b></i></p><p>Continuando con el ejemplo anterior, tenemos lo siguiente:</p><p><i>Regla compuesta del trapecio</i></p><div><ul><li><img src="practica4_e_eq06713379182124035157.png" alt="$n=10$"></li><li><img src="practica4_e_eq16052271863658366773.png" alt="$h=\frac{1-(-1)}{10}=0.2$"></li><li><img src="practica4_e_eq16587241566254793901.png" alt="$x_{0}=-1;\;x_{1}=-0.8;\;x_{2}=-0.6;\cdots ;x_{9}=0.8;\;x_{10}=1$">$</li></ul></div><p><img src="practica4_e_eq06626062517182845684.png" alt="$$ \int_{-1}^{1}e^{-x^{2}}dx=\frac{0.2}{2}\left[&#xA;e^{-1}+2\sum_{j=1}^{n-1}e^{-x_{j}^{2}}+e^{-1}\right]-\frac{2}{12}(0.2)^{2}&#xA;\left[-2e^{-\mu^{2}}(1-2\mu^{2})\right] $$"></p><p><img src="practica4_e_eq08217468269614935903.png" alt="$$ =1.4887+0.0133e^{-\mu^{2}}(1-2\mu^{2});\; -1<\mu<1 $$"></p><p><i>Regla compuesta de Simpson</i></p><div><ul><li><img src="practica4_e_eq06713379182124035157.png" alt="$n=10$"></li><li><img src="practica4_e_eq16052271863658366773.png" alt="$h=\frac{1-(-1)}{10}=0.2$"></li><li><img src="practica4_e_eq16587241566254793901.png" alt="$x_{0}=-1;\;x_{1}=-0.8;\;x_{2}=-0.6;\cdots ;x_{9}=0.8;\;x_{10}=1$">$</li></ul></div><p><img src="practica4_e_eq16218841068759414081.png" alt="$$ \int_{-1}^{1}e^{-x^{2}}dx=\frac{0.2}{3}\left[&#xA;e^{-1}+2\sum_{j=1}^{4}e^{-x_{2j}^{2}}+4\sum_{j=1}^{5}e^{-(x_{2j}-1)^{2}}+e^{-1}&#xA;\right]-\frac{2}{180}(0.2)^{4}\left[-4e^{-4^{2}}(-4\mu^{4}+12\mu^{2}-3)\right]&#xA;$$"></p><p><img src="practica4_e_eq04023275266964442187.png" alt="$$ =1.4936+0.000071e^{-\mu^{2}}(-4\mu^{4}+2\mu^{2}-3);\; -1<\mu<1 $$"></p><p><b>Cuadratura gaussiana</b></p><p>Las f&oacute;rmulas cerradas de Newton-Cotes son solo f&oacute;rmulas de cuadratura, estas ten&iacute;an cierto grado de exactitud, dependiendo del grado del polinomio de interpolaci&oacute;n de Lagrange. En este caso se utilizan polinomios de Legendre para aproximar integrales de funciones que satisfagan cierta cantidad de error (el error sea el m&iacute;nimo) esto es lo que se conoce como cuadratura gaussiana. Los polinomios de Legendre se definen entre -1 y 1 y son</p><p><img src="practica4_e_eq14206520790503226904.png" alt="$$ \{ 1, x, x^{2}-\frac{1}{3}, x^{3}-\frac{3}{5}x, x^{4}-\frac{6}{7}x^{2}+\frac{3}{35}, \cdots \} $$"></p><p>Estos polinomios son interesantes, ya que en el intervalo -1 a 1 tienen cierta simetr&iacute;a y son ortogonales. Esto nos da el siguiente resultado:</p><p>Si tenemos:</p><div><ul><li><img src="practica4_e_eq15084836845238326044.png" alt="$P_{n}(x)$"> - polinomio de Legendre de grado n</li><li><img src="practica4_e_eq18278489966998892808.png" alt="$x_{1},x_{2},\cdots,x_{n}$"> ra&iacute;ces de <img src="practica4_e_eq15084836845238326044.png" alt="$P_{n}(x)$"></li><li><img src="practica4_e_eq13041821137325123775.png" alt="$$ c_{i}=\int_{-1}^{1}\prod_{j=1\neq i}^{n}\frac{x-x_{j}}{x_{i}-x_{j}}dx $$"></li></ul></div><p>Entonces:</p><div><ul><li><img src="practica4_e_eq07369394117540490994.png" alt="$\int_{-1}^{1}P(x)dx=\sum_{i=1}^{n}c_{i}P(x_{i})$"> y <img src="practica4_e_eq00441311847593852498.png" alt="$P(x)$"> con grado menor que <img src="practica4_e_eq15071035700124369223.png" alt="$2n$">.</li></ul></div><p>Resultado que se traduce en la aproximaci&oacute;n num&eacute;rica de una integral de -1 a 1 de cualquier funci&oacute;n:</p><p><img src="practica4_e_eq10339459279546201740.png" alt="$$\int_{-1}^{1}f(x)dx\approx\sum_{i=1}^{n}c_{i}f(x_{i})$$"></p><p>Los coeficientes <img src="practica4_e_eq10711459659918532023.png" alt="$c_{i}$"> y las ra&iacute;ces <img src="practica4_e_eq02319752440649908444.png" alt="$x_{i}$"> de los polinomios de Legendre, ya vienen especificados en tablas, y solo es necesario sustituir los valores en la f&oacute;rmula dependiendo de la funci&ograve;n que se quere integrar y del grado del polinomio de Legendre que se quiera trabajar.</p><p>Si se quiere integrar sobre cualquier intervalo, se necesita previamente realizar una equivalencia entre una integral definida en cualquier intervalo y una definida entre -1 y 1, y entonces calcular la aproximaci&oacute;n por cuadratura gaussiana a la nueva integral definida entre -1 y 1. Esta equivalencia es la siguiente y se halla mediante cambios de variable:</p><p><img src="practica4_e_eq10426846890033937052.png" alt="$$\int_{a}^{b}f(x)dx=\int_{-1}^{1}f\left ( \frac{(b-a)t+b+a}{2}\right )&#xA;\left (\frac{b-a}{2}\right ) dt$$"></p><p>Con el ejemplo que est&aacute;bamos tratando, la integraci&oacute;n de hace de -1 a 1, por lo tanto no se necesita ning&uacute;n ajuste. La integral quedar&iacute;a as&iacute; (utilizando las ra&iacute;ces y coeficientes de polinomios de Legendre escritos en tablas):</p><p>Para n=2:</p><p><img src="practica4_e_eq11739181388857621501.png" alt="$$\int_{-1}^{1}e^{-x^{2}}dx\approx&#xA;e^{-(0.5773502692)^{2}}+e^{-(-0.5773502692)^{2}}\approx 1.4331 $$"></p><p>Para n=3:</p><p><img src="practica4_e_eq07721013999135432197.png" alt="$$\int_{-1}^{1}e^{-x^{2}}dx\approx&#xA;0.5555555556e^{-(0.7745966692)^{2}}+0.8888888889+0.5555555556e^{-(-0.7745966692)^{2}}\approx&#xA;1.4986 $$"></p><h2 id="21">Desarrollo</h2><p>El siguiente c&oacute;digo es una modificaci&oacute;n del c&oacute;digo de Lathi (C&oacute;digo del cap&iacute;tulo 2, M2.4 p&aacute;g 161), ejemplo de convoluciones continuas</p><pre class="language-matlab">
+<span class="keyword">function</span> convconm(x,h)
+  figure (1) <span class="comment">% Se crea una figura para hacer las gr&aacute;ficas</span>
+  dtau = 0.005; <span class="comment">% Base de los rectangulos para realizar la integral </span>
+  tau = -1:dtau:4; <span class="comment">% Intervalo de visualizaci&oacute;n del resultado</span>
+  ti = 0; <span class="comment">% Indice para el vector de resultados</span>
+  tvec = -.25:.1:3.75; <span class="comment">% traslaciones de t, cuantas integrales se calulan  </span>
+  y = NaN*zeros(1, length (tvec)); <span class="comment">% Resultados de acuerdo a cuantos t</span>
+  <span class="keyword">for</span> t = tvec; <span class="comment">% Cantidad de traslaciones</span>
+      ti = ti+1; <span class="comment">% Indice para guardar el resultado (indice del tiempo)</span>
+      xh =(x*(t-tau)).*(h*(tau)); <span class="comment">% resultado de la multiplicaci&oacute;n </span>
+      lxh = length(xh); <span class="comment">% longitud del resultado</span>
+      y(ti) = sum(xh.*dtau); <span class="comment">% Base por altura, aproximaci&oacute;n de la integral</span>
+      subplot (2,1,1), <span class="comment">% gr&aacute;fica de 2 x 1 (primera)</span>
+      plot(tau, h(tau), <span class="string">'r-'</span>, tau, x(t-tau), <span class="string">'g--'</span>, t, 0, <span class="string">'ob'</span>); <span class="comment">%graficas </span>
+      axis ([tau(1) tau(end) -2.0 2.5]); <span class="comment">% l&iacute;mites de los ejes</span>
+      patch([tau(1:end-1); tau(1:end-1); tau(2:end); tau(2:end)],<span class="keyword">...</span>
+      [zeros(1,lxh-1);xh(1:end-1);xh(2:end);zeros(1,lxh-1)],<span class="keyword">...</span>
+      [.8 .8 .8], <span class="string">'edgecolor'</span>, <span class="string">'none'</span>);
+      xlabel(<span class="string">'\tau'</span>); <span class="comment">% Texto del eje X</span>
+      legend(<span class="string">'h(\tau)'</span>, <span class="string">'x(t-\tau)'</span>,<span class="string">'t'</span>,<span class="string">'h(\tau)x(t-\tau)'</span>)<span class="comment">% Caja de Texto  </span>
+      subplot (2, 1, 2)  <span class="comment">% gr&aacute;fica de 2 x 1 (segunda)</span>
+      plot (tvec, y, <span class="string">'k'</span>, tvec (ti), y(ti), <span class="string">'ok'</span>);
+      xlabel (<span class="string">'t'</span>); 
+      ylabel (<span class="string">'y(t) = \int h(\tau)x(t-\tau) d\tau'</span>);
+      axis ([tau(1) tau(end) -1.0 2.0]); <span class="comment">% l&iacute;mites del eje</span>
+      grid; <span class="comment">% malla</span>
+      drawnow; <span class="comment">% efecto de movimiento continuo</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+  
+
+</pre><h2 id="22">PR04 1</h2><p>Para el PR04 reporte la grafica de la simulaci&oacute;n n&uacute;merica de la convoluci&oacute;n y compare con el resultado an&aacute;litico que obtuvo para el problema 1, esto es, su pr&aacute;ctica tendr&aacute; que incluir una llamada a la funci&oacute;nn <i>convconm</i> y posteriormente se tendr&aacute; que mostrar (mediante el Publish) la gr&aacute;fica tanto de las se&ntilde;ales invlucradas como el resultado de la convoluci&oacute;n, y en esta &uacute;ltima gr&aacute;ficara su resultado analitico, se tendr&aacute; que incluir el resultado analitico.</p><p>Modificaci&oacute;n del c&oacute;digo para la simulaci&oacute;n numerica</p><pre class="language-matlab">
+<span class="keyword">function</span> convcon(x,h)
+  figure (1) <span class="comment">% Se crea una figura para hacer las gr&aacute;ficas</span>
+  dtau = 0.005; <span class="comment">% Base de los rectangulos para realizar la integral </span>
+  tau = -1:dtau:4; <span class="comment">% Intervalo de visualizaci&oacute;n del resultado</span>
+  ti = 0; <span class="comment">% Indice para el vector de resultados</span>
+  tvec = -1:.1:4; <span class="comment">% traslaciones de t, cuantas integrales se calulan  </span>
+  y = NaN*zeros(1, length (tvec)); <span class="comment">% Resultados de acuerdo a cuantos t</span>
+  <span class="keyword">for</span> t = tvec; <span class="comment">% Cantidad de traslaciones</span>
+      ti = ti+1; <span class="comment">% Indice para guardar el resultado (indice del tiempo)</span>
+      xh = x(t-tau).*h(tau); <span class="comment">% resultado de la multiplicaci&oacute;n </span>
+      lxh = length(xh); <span class="comment">% longitud del resultado</span>
+      y(ti) = sum(xh.*dtau); <span class="comment">% Base por altura, aproximaci&oacute;n de la integral</span>
+      subplot (2,1,1), <span class="comment">% gr&aacute;fica de 2 x 1 (primera)</span>
+      plot(tau, h(tau), <span class="string">'r-'</span>, tau, x(t-tau), <span class="string">'g--'</span>, t, 0, <span class="string">'ob'</span>); <span class="comment">%graficas </span>
+      axis ([tau(1) tau(end) -2.0 2.5]); <span class="comment">% l&iacute;mites de los ejes</span>
+      patch([tau(1:end-1); tau(1:end-1); tau(2:end); tau(2:end)],<span class="keyword">...</span>
+      [zeros(1,lxh-1);xh(1:end-1);xh(2:end);zeros(1,lxh-1)],<span class="keyword">...</span>
+      [.8 .8 .8], <span class="string">'edgecolor'</span>, <span class="string">'none'</span>);
+      xlabel(<span class="string">'\tau'</span>); <span class="comment">% Texto del eje X</span>
+      legend(<span class="string">'h(\tau)'</span>, <span class="string">'x(t-\tau)'</span>,<span class="string">'t'</span>,<span class="string">'h(\tau)x(t-\tau)'</span>)<span class="comment">% Caja de Texto  </span>
+      subplot (2, 1, 2)  <span class="comment">% gr&aacute;fica de 2 x 1 (segunda)</span>
+      plot (tvec, y, <span class="string">'k'</span>, tvec (ti), y(ti), <span class="string">'ok'</span>);
+      xlabel (<span class="string">'t'</span>); 
+      ylabel (<span class="string">'y(t) = \int h(\tau)x(t-\tau) d\tau'</span>);
+      axis ([tau(1) tau(end) -1.0 1.0]); <span class="comment">% l&iacute;mites del eje</span>
+      grid; <span class="comment">% malla</span>
+      drawnow; <span class="comment">% efecto de movimiento continuo</span>
+  <span class="keyword">end</span>
+  <span class="keyword">end</span>
+
+</pre><p>Si ejecutamos lo siguiente</p><pre class="language-matlab">
+<span class="keyword">function</span>[]=Ejercicio1AConvolucion()
+<span class="comment">%convolucion ejercio 1</span>
+x=@(t)(-t+1).*(t&gt;=0 &amp; t&lt;1)+(t-1).*(t&gt;=1 &amp; t&lt;2);<span class="comment">%Funcion que se desplaza..</span>
+h=@(t)(1).*(t&gt;=0 &amp; t&lt;1);
+convcon(x,h);
+<span class="keyword">end</span>
+
+</pre><p>Gr&aacute;fica de la convoluci&oacute;n</p><p><img vspace="5" hspace="5" src="Convolucion1.png" alt=""> </p><h2 id="23">Analiticamente la funci&oacute;n de la convoluci&oacute;n es</h2><p><img vspace="5" hspace="5" src="C1.png" alt=""> </p><h2 id="24">PR04 3</h2><p>Para el PR04 reporte la grafica de la simulaci&oacute;n n&uacute;merica de la convoluci&oacute;n y compare con el resultado an&aacute;litico que obtuvo para el problema 3, esto es, su pr&aacute;ctica tendr&aacute; que incluir una llamada a la funci&oacute;nn <i>convconm</i> y posteriormente se tendr&aacute; que mostrar (mediante el Publish) la gr&aacute;fica tanto de las se&ntilde;ales invlucradas como el resultado de la convoluci&oacute;n, y en esta &uacute;ltima gr&aacute;ficara su resultado analitico, se tendr&aacute; que incluir el resultado analitico. Modificaci&oacute;n del c&oacute;digo para la simulaci&oacute;n numerica</p><pre class="language-matlab">
+<span class="keyword">function</span> convconm2(x,h)
+  figure (1) <span class="comment">% Se crea una figura para hacer las gr&aacute;ficas</span>
+  dtau = 0.005; <span class="comment">% Base de los rectangulos para realizar la integral </span>
+  tau = -1:dtau:6; <span class="comment">% Intervalo de visualizaci&oacute;n del resultado</span>
+  ti = 0; <span class="comment">% Indice para el vector de resultados</span>
+  tvec = 0:.1:6; <span class="comment">% traslaciones de t, cuantas integrales se calulan  </span>
+  y = NaN*zeros(1, length (tvec)); <span class="comment">% Resultados de acuerdo a cuantos t</span>
+  <span class="keyword">for</span> t = tvec; <span class="comment">% Cantidad de traslaciones</span>
+      ti = ti+1; <span class="comment">% Indice para guardar el resultado (indice del tiempo)</span>
+      xh = x(t-tau).*h(tau); <span class="comment">% resultado de la multiplicaci&oacute;n </span>
+      lxh = length(xh); <span class="comment">% longitud del resultado</span>
+      y(ti) = sum(xh.*dtau); <span class="comment">% Base por altura, aproximaci&oacute;n de la integral</span>
+      subplot (2,1,1), <span class="comment">% gr&aacute;fica de 2 x 1 (primera)</span>
+      plot(tau, h(tau), <span class="string">'r-'</span>, tau, x(t-tau), <span class="string">'g--'</span>, t, 0, <span class="string">'ob'</span>); <span class="comment">%graficas </span>
+      axis ([tau(1) tau(end) -2.0 2.5]); <span class="comment">% l&iacute;mites de los ejes</span>
+      patch([tau(1:end-1); tau(1:end-1); tau(2:end); tau(2:end)],<span class="keyword">...</span>
+      [zeros(1,lxh-1);xh(1:end-1);xh(2:end);zeros(1,lxh-1)],<span class="keyword">...</span>
+      [.8 .8 .8], <span class="string">'edgecolor'</span>, <span class="string">'none'</span>);
+      xlabel(<span class="string">'\tau'</span>); <span class="comment">% Texto del eje X</span>
+      legend(<span class="string">'h(\tau)'</span>, <span class="string">'x(t-\tau)'</span>,<span class="string">'t'</span>,<span class="string">'h(\tau)x(t-\tau)'</span>)<span class="comment">% Caja de Texto  </span>
+      subplot (2, 1, 2)  <span class="comment">% gr&aacute;fica de 2 x 1 (segunda)</span>
+      plot (tvec, y, <span class="string">'k'</span>, tvec (ti), y(ti), <span class="string">'ok'</span>);
+      xlabel (<span class="string">'t'</span>); 
+      ylabel (<span class="string">'y(t) = \int h(\tau)x(t-\tau) d\tau'</span>);
+      axis ([tau(1) tau(end) -1.0 3.0]); <span class="comment">% l&iacute;mites del eje</span>
+      grid; <span class="comment">% malla</span>
+      drawnow; <span class="comment">% efecto de movimiento continuo</span>
+  <span class="keyword">end</span>
+  <span class="keyword">end</span>
+
+</pre><p>Si ejecutamos lo siguiente</p><pre class="language-matlab">
+<span class="keyword">function</span>[]=Ejercicio1BConvolucion()
+<span class="comment">%convolucion ejercio 2</span>
+x=@(t)(1).*(t&gt;=1 &amp; t&lt;3);<span class="comment">%Funcion que se desplaza..</span>
+h=@(t)(t).*(t&gt;=0 &amp; t&lt;1)+(1).*(t&gt;=1 &amp; t&lt;2);
+convconm2(x,h);
+<span class="keyword">end</span>
+
+</pre><p>Gr&aacute;fica de la convoluci&oacute;n</p><p><img vspace="5" hspace="5" src="Convolucion2.png" alt=""> </p><h2 id="25">Analiticamente la funci&oacute;n de la convoluci&oacute;n es</h2><p><img vspace="5" hspace="5" src="C2.png" alt=""> </p><h2 id="26">PR06 e</h2><p>Para el PR06 reporte la grafica de la simulaci&oacute;n n&uacute;merica de la correalci&oacute;n y compare con el resultado an&aacute;litico que obtuvo para el problema e), esto es, su pr&aacute;ctica tendr&aacute; que incluir una llamada a la funci&oacute;nn <i>convconm</i> y posteriormente se tendr&aacute; que mostrar (mediante el Publish) la gr&aacute;fica tanto de las se&ntilde;ales involucradas como el resultado de su correlaci&oacute;n, y en esta &uacute;ltima graficara su resultado analitico, se tendr&aacute; que incluir el resultado analitico. Modificaci&oacute;n del c&oacute;digo para la simulaci&oacute;n numerica</p><pre class="language-matlab">
+<span class="keyword">function</span> corrconm(x,h)
+  figure (1) <span class="comment">% Se crea una figura para hacer las gr&aacute;ficas</span>
+  dtau = 0.005; <span class="comment">% Base de los rectangulos para realizar la integral </span>
+  tau = -5:dtau:5; <span class="comment">% Intervalo de visualizaci&oacute;n del resultado</span>
+  ti = 0; <span class="comment">% Indice para el vector de resultados</span>
+  tvec = -4:1:4; <span class="comment">% traslaciones de t, cuantas integrales se calulan  </span>
+  y = NaN*zeros(1, length (tvec)); <span class="comment">% Resultados de acuerdo a cuantos t</span>
+  <span class="keyword">for</span> t = tvec, <span class="comment">% Cantidad de traslaciones</span>
+      ti = ti+1; <span class="comment">% Indice para guardar el resultado (indice del tiempo)</span>
+      xh = x(t+tau).*h(tau); <span class="comment">% resultado de la multiplicaci&oacute;n </span>
+      lxh = length(xh); <span class="comment">% longitud del resultado</span>
+      y(ti) = sum(xh.*dtau); <span class="comment">% Base por altura, aproximaci&oacute;n de la integral</span>
+      subplot (2,1,1); <span class="comment">% gr&aacute;fica de 2 x 1 (primera)</span>
+      plot(tau, h(tau), <span class="string">'r-'</span>, tau, x(t-tau), <span class="string">'g--'</span>, t, 0, <span class="string">'ob'</span>); <span class="comment">%graficas </span>
+      axis ([tau(1) tau(end) -2.0 2.5]); <span class="comment">% l&iacute;mites de los ejes</span>
+      patch([tau(1:end-1); tau(1:end-1); tau(2:end); tau(2:end)],<span class="keyword">...</span>
+      [zeros(1,lxh-1);xh(1:end-1);xh(2:end);zeros(1,lxh-1)],<span class="keyword">...</span>
+      [.8 .8 .8], <span class="string">'edgecolor'</span>, <span class="string">'none'</span>);
+      xlabel(<span class="string">'\tau'</span>); <span class="comment">% Texto del eje X</span>
+      legend(<span class="string">'h(\tau)'</span>, <span class="string">'x(t+\tau)'</span>,<span class="string">'t'</span>,<span class="string">'h(\tau)x(t+\tau)'</span>)<span class="comment">% Caja de Texto  </span>
+      subplot (2, 1, 2)  <span class="comment">% gr&aacute;fica de 2 x 1 (segunda)</span>
+      plot (tvec, y, <span class="string">'k'</span>, tvec (ti), y(ti), <span class="string">'ok'</span>);
+      xlabel (<span class="string">'t'</span>); 
+      ylabel (<span class="string">'y(t) = \int h(\tau)x(t+\tau) d\tau'</span>);
+      axis ([tau(1) tau(end) -3.0 5.0]); <span class="comment">% l&iacute;mites del eje</span>
+      grid; <span class="comment">% malla</span>
+      drawnow; <span class="comment">% efecto de movimiento continuo</span>
+  <span class="keyword">end</span>
+  <span class="keyword">end</span>
+
+</pre><p>Si ejecutamos lo siguiente</p><pre class="language-matlab">
+<span class="comment">%%4 Autocorrelaci&oacute;n</span>
+
+g = @(t)((t&gt;=0&amp;t&lt;=3)-2.*(t&gt;=3&amp;t&lt;=4)+(t&gt;=3&amp;t&lt;=4))    <span class="comment">%%Es la que se desplaza     </span>
+f = @(t)((t&gt;=0&amp;t&lt;=3)-2.*(t&gt;=3&amp;t&lt;=4)+(t&gt;=3&amp;t&lt;=4)) 
+corrconm(g,f)
+
+</pre><p>Gr&aacute;fica de la autocorrelaci&oacute;n</p><p><img vspace="5" hspace="5" src="Convolucion3.png" alt=""> </p><h2 id="27">Analiticamente la funci&oacute;n de la correlaci&oacute;n es</h2><p><img vspace="5" hspace="5" src="C3.png" alt=""> </p><h2 id="28">PR06 f</h2><p>Para el PR06 reporte la grafica de la simulaci&oacute;n n&uacute;merica de la correalci&oacute;n y compare con el resultado an&aacute;litico que obtuvo para el problema f), esto es, su pr&aacute;ctica tendr&aacute; que incluir una llamada a la funci&oacute;nn <i>convconm</i> y posteriormente se tendr&aacute; que mostrar (mediante el Publish) la gr&aacute;fica tanto de las se&ntilde;ales involucradas como el resultado de su correlaci&oacute;n, y en esta &uacute;ltima graficara su resultado analitico, se tendr&aacute; que incluir el resultado analitico. Modificaci&oacute;n del c&oacute;digo para la simulaci&oacute;n numerica</p><pre class="language-matlab">
+<span class="keyword">function</span> corrconm(x,h)
+  figure (1) <span class="comment">% Se crea una figura para hacer las gr&aacute;ficas</span>
+  dtau = 0.005; <span class="comment">% Base de los rectangulos para realizar la integral </span>
+  tau = -5:dtau:5; <span class="comment">% Intervalo de visualizaci&oacute;n del resultado</span>
+  ti = 0; <span class="comment">% Indice para el vector de resultados</span>
+  tvec = -4:1:4; <span class="comment">% traslaciones de t, cuantas integrales se calulan  </span>
+  y = NaN*zeros(1, length (tvec)); <span class="comment">% Resultados de acuerdo a cuantos t</span>
+  <span class="keyword">for</span> t = tvec, <span class="comment">% Cantidad de traslaciones</span>
+      ti = ti+1; <span class="comment">% Indice para guardar el resultado (indice del tiempo)</span>
+      xh = x(t+tau).*h(tau); <span class="comment">% resultado de la multiplicaci&oacute;n </span>
+      lxh = length(xh); <span class="comment">% longitud del resultado</span>
+      y(ti) = sum(xh.*dtau); <span class="comment">% Base por altura, aproximaci&oacute;n de la integral</span>
+      subplot (2,1,1); <span class="comment">% gr&aacute;fica de 2 x 1 (primera)</span>
+      plot(tau, h(tau), <span class="string">'r-'</span>, tau, x(t-tau), <span class="string">'g--'</span>, t, 0, <span class="string">'ob'</span>); <span class="comment">%graficas </span>
+      axis ([tau(1) tau(end) -2.0 2.5]); <span class="comment">% l&iacute;mites de los ejes</span>
+      patch([tau(1:end-1); tau(1:end-1); tau(2:end); tau(2:end)],<span class="keyword">...</span>
+      [zeros(1,lxh-1);xh(1:end-1);xh(2:end);zeros(1,lxh-1)],<span class="keyword">...</span>
+      [.8 .8 .8], <span class="string">'edgecolor'</span>, <span class="string">'none'</span>);
+      xlabel(<span class="string">'\tau'</span>); <span class="comment">% Texto del eje X</span>
+      legend(<span class="string">'h(\tau)'</span>, <span class="string">'x(t+\tau)'</span>,<span class="string">'t'</span>,<span class="string">'h(\tau)x(t+\tau)'</span>)<span class="comment">% Caja de Texto  </span>
+      subplot (2, 1, 2)  <span class="comment">% gr&aacute;fica de 2 x 1 (segunda)</span>
+      plot (tvec, y, <span class="string">'k'</span>, tvec (ti), y(ti), <span class="string">'ok'</span>);
+      xlabel (<span class="string">'t'</span>); 
+      ylabel (<span class="string">'y(t) = \int h(\tau)x(t+\tau) d\tau'</span>);
+      axis ([tau(1) tau(end) -3.0 5.0]); <span class="comment">% l&iacute;mites del eje</span>
+      grid; <span class="comment">% malla</span>
+      drawnow; <span class="comment">% efecto de movimiento continuo</span>
+  <span class="keyword">end</span>
+  <span class="keyword">end</span>
+
+</pre><p>Si ejecutamos lo siguiente</p><pre class="language-matlab">
+
+<span class="comment">%%4 Correlaci&oacute;n </span>
+
+g = @(t) ((t&gt;=0&amp;t&lt;=2)-2.*(t&gt;=2&amp;t&lt;2)-(t&gt;=2&amp;t&lt;=4))    <span class="comment">%%Es la que se desplaza     </span>
+f = @(t) ((t&gt;=0&amp;t&lt;=3)-2.*(t&gt;=3&amp;t&lt;=4)+(t&gt;=3&amp;t&lt;=4))
+corrconm(g,f)
+
+
+</pre><p>Gr&aacute;fica de la autocorrelaci&oacute;n</p><p><img vspace="5" hspace="5" src="Convolucion4.png" alt=""> </p><h2 id="29">Analiticamente la funci&oacute;n de la correlaci&oacute;n es</h2><p><img vspace="5" hspace="5" src="C4.png" alt=""> </p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Práctica 4: Convolución y Correlación de señales en tiempo continuo
+%
+%% Portada
+%%
+% 
+% <<Portada_practica4.png>>
+% 
+%% Objetivos
+% Los objetivos son los sigueintes:
+%
+% * Conocer métodos básicos de integración numérica 
+% * Manipulación de instrucciones en MATLAB
+% * Simular convoluciones y correlaciones de señales continuas
+%
+
+%% Introducción
+% *Métodos numéricos de integración*
+% El teorema fundamental del cálculo (en una de sus versiones) se basa en
+% encontrar una antiderivada $F$. Conociendo dicha antiderivada se puede
+% encontrar la integral definida de otra función $f=F'$. El teorema
+% fundamental del cálculo dice:
+%
+% Si $f(x)$ es integrable, y $\frac{dF(x)}{dx}=f(x)$, entonces:
+%
+% $$\int_{a}^{b}f(x)dx=F(b)-F(a)$$
+%
+% Sin embargo, a veces con los métodos de integración conocidos (cambio de
+% variable, integración por partes, fracciones parciales, sustitución
+% trigonométrica) no es posible hallar una antiderivada $F(x)$, sin embargo,
+% el objetivo de la integración es geométricamente hallar el área encerrada
+% por la curva de la función $f(x)$ la recta $y=0$ y las rectas $x=a$ y $x=b$. Y para ello se pueden utilizar diferentes
+% métodos, sin necesidad de hallar una antiderivada $F(x)$. Estos son los
+% métodos numéricos.
+%
+% Como ejemplo, tenemos la función $f(x)=e^{-x^{2}}$. De acuerdo con el
+% teorema fundamental del cálculo,su integral de $x=-1$ a $x=1$ sería definida
+% como: 
+%
+% $$\int_{-1}^{1}f(x)dx=\int_{-1}^{1}e^{-x^{2}}dx=F(1)-F(-1)$$
+% 
+% con $$ \frac{dF(x)}{dx}=f(x) $$ .
+% 
+% Pero, ¿quién es $F(x)$ (la antiderivada)? La
+% respuesta es que no existe como función elemental; por tanto por los
+% métodos tradicionales no se puede hallar la integral de esta función. Sin
+% embargo el resultado de esta integral es aproximadamente 1.4936,
+% determinandose por métodos numéricos.
+%
+% La técnica que se utiliza para integrar en este caso es por medio de
+% aproximación a la función mediante polinomios lo suficientemente
+% parecidos (con el menos error posible) e integrarlos. 
+%% 
+% *Fórmulas cerradas de Newton-Cotes*
+%
+% Supongamos que tenemos la siguiente integral $\int_{a}^{b}f(x)dx$, y no
+% es posible encontrar la antiderivada $F(x)$. Una forma de integrar es
+% mediante la aproximación a $f(x)$ con un polinomio de interpolación de
+% Langrage. La teoría de Lagrange dice que si $f(x)$ es integrable n veces,
+% se puede hallar un polinomio que interpole a dicha función (la corte n
+% veces en un intervalo) más un término de error. Un polinomio de
+% interpolación de Lagrange se ve de la siguiente forma:
+%
+% $$ f(x)=P(x)+\frac{f^{(n+1)}\xi (x)}{(n+1)!}(x-x_{0})(x-x_{1})\cdots
+% (x-x_{i}) $$
+%
+% con $x\in [a,b]$ y $x_{i}\in [a,b]$
+%
+%
+% Si se integra, se tiene la fórmula cerrada de (n+1) puntos de
+% Newton-Cotes. (Ver gráfica). Donde por regla general:
+%
+% * $x_{0}=a$
+% * $x_{n}=b$
+% * $h=\frac{b-a}{n}$ REPLACE_WITH_DASH_DASH (paso)
+% * $x_{i}=x_{0}+ih$ con $i=0,1, \cdots ,n$
+%
+% Dependiendo el grado n del polinomio, se
+% obtiene lo que se conoce como Regla del trapecio (n=1) o primer fórmula cerrada de Newton-Cotes, Regla de Simpson
+% (n=2) o segunda fórmula cerrada de Newton-Cotes, y Regla de los tres
+% octavos de Simpson (n=3).
+%%
+% *Regla del trapecio (n=1)*
+%
+% $$\int_{x_{0}}^{x_{1}}f(x)dx=\frac{h}{2}\left [ f(x_{0})+f(x_{1}) \right ]
+% -\left(\frac{h^{3}}{12}\right)f^{(2)}(\xi)$$
+%
+% con $x_{0} <\xi < x_{1}$
+%
+% Donde:
+%
+% * $x_{0}=a$
+% * $x_{1}=b$
+% * $h=b-a$ REPLACE_WITH_DASH_DASH (paso)
+% * $x_{i}=a+i(b-a)$ con $i=0,1$
+%%
+% *Regla de Simpson (n=2)*
+%
+% $$\int_{x_{0}}^{x_{2}}f(x)dx=\frac{h}{3}\left [ f(x_{0})+4f(x_{1})+f(x_{2}) \right ]
+% -\left(\frac{h^{5}}{90}\right)f^{(4)}(\xi)$$
+%
+% con $x_{0} <\xi < x_{2}$ 
+%
+% Donde:
+%
+% * $x_{0}=a$
+% * $x_{2}=b$
+% * $h=\frac{b-a}{2}$ REPLACE_WITH_DASH_DASH (paso)
+% * $x_{i}=a+ih$ con $i=0,1,2$
+% * $x_{1}=a+\frac{b-a}{2}=\frac{b+a}{2}$ con $i=0,1,2$
+%%
+% *Regla de los tres octavos de Simpson (n=3)*
+%
+% $$ \int_{x_{0}}^{x_{3}}f(x)dx=\frac{3}{8}h\left [ f(x_{0})+3f(x_{1})+3f(x_{2})+f(x_{3}) \right ]
+% -\left(\frac{3h^{5}}{80}\right)f^{(4)}(\xi)$$
+%
+% con $x_{0} <\xi < x_{3}$ 
+%
+% Donde:
+%
+% * $x_{0}=a$
+% * $x_{3}=b$
+% * $h=\frac{b-a}{3}$ REPLACE_WITH_DASH_DASH (paso)
+% * $x_{i}=a+i\frac{b-a}{3}$ con $i=0,1,2,3$
+% * $x_{1}=a+\frac{b-a}{3}=\frac{2a+b}{3}$
+% * $x_{2}=a+\frac{2b-2a}{3}=\frac{2b+a}{3}$
+%%
+% *EJEMPLO*
+%
+% Con la función $f(x)=e^{-x^{2}}$, los tres métodos anteriores se
+% desarrollan así;
+%% 
+% _Regla del trapecio_
+%%
+%
+% $$ \int_{-1}^{1}e^{-x^{2}}dx= \frac{2}{2} \left [ e^{-1}+e^{-1} \right ]
+% - \frac{8}{12} \left [ -2e^{-\xi ^{2}}(1-2\xi^{2}) \right ] 
+% =0.7357+ \frac{4}{3}e^{-\xi^{2}}(1-2\xi^{2})$$ 
+%
+% con $$ -1<\xi<1 $$
+%
+%%
+% _Regla de Simpson_
+%%
+%
+% $$ \int_{-1}^{1}e^{-x^{2}}dx= \frac{1}{3} \left [ e^{-1}+4e^{0}+e^{-2} 
+% \right ] - \frac{1}{90} \left [ -4e^{-\xi^{2}}(-4\xi^{4}+12\xi^{2}-3)
+% \right ] $$ 
+%
+% $$ = 1.5785+ \frac{2}{45}e^{-\xi^{2}}(-4\xi^{4}+12\xi^{2}-3)) $$ 
+%
+% con $$ -1 <\xi <1 $$
+%
+%%
+% _Regla de los tres octavos de Simpson_
+%%
+%
+% $$ \int_{-1}^{1}e^{-x^{2}}dx=\frac{3}{8}(\frac{2}{3})\left [ 
+% e^{-1}+3e^{-\frac{1}{4}}+3e^{-\frac{1}{4}}+e^{-1} \right ] 
+% -\frac{3}{80}(\frac{2}{3})^{5}\left [ -4e^{-\xi^{2}}(-4\xi^{4}+12\xi^{2}
+% -3)\right ] $$
+%
+% $$ = 1.5261+\frac{8}{405}e^{-\xi^{2}}(-4\xi^{4}+12\xi^{2}-3))$$ 
+%
+% con $$ -1 <\xi <1 $$
+%
+%%
+% *Fórmulas cerradas de Newton-Cotes compuestas*
+%
+% Son una extensión de las fórmulas cerradas de Newton-Cotes, en las que
+% una función se divide en múltiples intervalos y no solo uno, y a cada
+% intervalo se le aplica la regla del trapecio, de Simpson, de tres octavos
+% de Simpson, etcétera.
+%
+%%
+% *Regla compuesta del trapecio*
+%
+% $$\int_{a}^{b}f(x)dx=\frac{h}{2}\left [
+% f(a)+2\sum_{j=1}^{n-1}f(x_{j})+f(b)\right ]
+% -\frac{b-a}{12}h^{2}f^{(2)}(\mu)$ con $\mu\in(a,b)$$
+%
+% * $n$ - número de subintervalos
+% * $h=\frac{b-a}{n}$ - paso
+% * $x_{j}=a+jh\;\;j=0,1,2,\cdots,n$
+%
+%%
+% *Regla compuesta de Simpson*
+%
+% $$\int_{a}^{b}f(x)dx=\frac{h}{3}\left [ f(a)+2\sum_{j=1}^{(n/2)-1}f(x_{2j})
+% +4\sum_{j=1}^{n/2}f(x_{2j-1})+f(b) \right ]
+% -\left(\frac{b-a}{180}\right)h^{4}f^{(4)}(\mu)$ con $\mu\in(a,b)$$
+%
+% * $n$ par - número de subintervalos
+% * $h=\frac{b-a}{n}$ - paso
+% * $x_{j}=a+jh\;\;j=0,1,\cdots,n$
+%
+%%
+% _*Ejemplo*_
+%
+% Continuando con el ejemplo anterior, tenemos lo siguiente:
+%
+% _Regla compuesta del trapecio_
+%
+% * $n=10$
+% * $h=\frac{1-(-1)}{10}=0.2$
+% * $x_{0}=-1;\;x_{1}=-0.8;\;x_{2}=-0.6;\cdots ;x_{9}=0.8;\;x_{10}=1$$
+%
+% $$ \int_{-1}^{1}e^{-x^{2}}dx=\frac{0.2}{2}\left[
+% e^{-1}+2\sum_{j=1}^{n-1}e^{-x_{j}^{2}}+e^{-1}\right]-\frac{2}{12}(0.2)^{2}
+% \left[-2e^{-\mu^{2}}(1-2\mu^{2})\right] $$
+%
+% $$ =1.4887+0.0133e^{-\mu^{2}}(1-2\mu^{2});\; -1<\mu<1 $$
+%
+% _Regla compuesta de Simpson_
+%
+% * $n=10$
+% * $h=\frac{1-(-1)}{10}=0.2$
+% * $x_{0}=-1;\;x_{1}=-0.8;\;x_{2}=-0.6;\cdots ;x_{9}=0.8;\;x_{10}=1$$
+%
+% $$ \int_{-1}^{1}e^{-x^{2}}dx=\frac{0.2}{3}\left[
+% e^{-1}+2\sum_{j=1}^{4}e^{-x_{2j}^{2}}+4\sum_{j=1}^{5}e^{-(x_{2j}-1)^{2}}+e^{-1}
+% \right]-\frac{2}{180}(0.2)^{4}\left[-4e^{-4^{2}}(-4\mu^{4}+12\mu^{2}-3)\right]
+% $$
+%
+% $$ =1.4936+0.000071e^{-\mu^{2}}(-4\mu^{4}+2\mu^{2}-3);\; -1<\mu<1 $$
+%
+%%
+% *Cuadratura gaussiana*
+%
+% Las fórmulas cerradas de Newton-Cotes son solo fórmulas de cuadratura,
+% estas tenían cierto grado de exactitud, dependiendo del grado del
+% polinomio de interpolación de Lagrange.
+% En este caso se utilizan polinomios de Legendre para aproximar integrales
+% de funciones que satisfagan cierta cantidad de error (el error sea el
+% mínimo) esto es lo que se conoce como cuadratura gaussiana.
+% Los polinomios de Legendre se definen entre -1 y 1 y son 
+%
+% $$ \{ 1, x, x^{2}-\frac{1}{3}, x^{3}-\frac{3}{5}x, x^{4}-\frac{6}{7}x^{2}+\frac{3}{35}, \cdots \} $$
+%
+% Estos polinomios son interesantes, ya que en el intervalo -1 a 1 tienen
+% cierta simetría y son ortogonales. Esto nos da el siguiente resultado:
+%
+% Si tenemos:
+% 
+% * $P_{n}(x)$ - polinomio de Legendre de grado n
+% * $x_{1},x_{2},\cdots,x_{n}$ raíces de $P_{n}(x)$
+% * $$ c_{i}=\int_{-1}^{1}\prod_{j=1\neq i}^{n}\frac{x-x_{j}}{x_{i}-x_{j}}dx $$
+%
+% Entonces:
+%
+% * $\int_{-1}^{1}P(x)dx=\sum_{i=1}^{n}c_{i}P(x_{i})$ y $P(x)$ con grado
+% menor que $2n$.
+%
+% Resultado que se traduce en la aproximación numérica de una integral de -1 a 1 de
+% cualquier función:
+%
+% $$\int_{-1}^{1}f(x)dx\approx\sum_{i=1}^{n}c_{i}f(x_{i})$$
+%
+% Los coeficientes $c_{i}$ y las raíces $x_{i}$ de los polinomios de
+% Legendre, ya vienen especificados en tablas, y solo es necesario
+% sustituir los valores en la fórmula dependiendo de la funciòn que se
+% quere integrar y del grado del polinomio de Legendre que se quiera
+% trabajar.
+%
+% Si se quiere integrar sobre cualquier intervalo, se necesita previamente
+% realizar una equivalencia entre una integral definida en cualquier
+% intervalo y una definida entre -1 y 1, y entonces calcular la
+% aproximación por cuadratura gaussiana a la nueva integral definida entre
+% -1 y 1. Esta equivalencia es la siguiente y se halla mediante cambios de
+% variable:
+%
+% $$\int_{a}^{b}f(x)dx=\int_{-1}^{1}f\left ( \frac{(b-a)t+b+a}{2}\right )
+% \left (\frac{b-a}{2}\right ) dt$$
+%
+% Con el ejemplo que estábamos tratando, la integración de hace de -1 a 1,
+% por lo tanto no se necesita ningún ajuste. La integral quedaría así
+% (utilizando las raíces y coeficientes de polinomios de Legendre escritos
+% en tablas):
+%
+% Para n=2:
+%
+% $$\int_{-1}^{1}e^{-x^{2}}dx\approx
+% e^{-(0.5773502692)^{2}}+e^{-(-0.5773502692)^{2}}\approx 1.4331 $$
+%
+% Para n=3:
+%
+% $$\int_{-1}^{1}e^{-x^{2}}dx\approx
+% 0.5555555556e^{-(0.7745966692)^{2}}+0.8888888889+0.5555555556e^{-(-0.7745966692)^{2}}\approx
+% 1.4986 $$
+%
+
+
+
+
+%% Desarrollo
+% El siguiente código es una modificación del código de Lathi 
+% (Código del capítulo 2, M2.4 pág 161), ejemplo de convoluciones 
+% continuas
+%
+% <include>convconm.m</include>
+%
+
+%% PR04 1
+% Para el PR04 reporte la grafica de la simulación númerica
+% de la convolución y compare con el resultado análitico que obtuvo para el problema 1, esto
+% es, su práctica tendrá que incluir una llamada a la funciónn
+% _convconm_ y posteriormente se tendrá que mostrar (mediante el
+% Publish) la gráfica tanto de las señales invlucradas como el resultado de
+% la convolución, y en esta última gráficara su resultado analitico, se
+% tendrá que incluir el resultado analitico.
+%
+% Modificación del código para la simulación numerica
+%
+% <include>convcon.m</include>
+%
+% Si ejecutamos lo siguiente
+% 
+% <include>Ejercicio1AConvolucion.m</include>
+%
+% Gráfica de la convolución
+%
+% <<Convolucion1.png>>
+%
+%% Analiticamente la función de la convolución es
+%
+% <<C1.png>>
+% 
+%% PR04 3
+% Para el PR04 reporte la grafica de la simulación númerica
+% de la convolución y compare con el resultado análitico que obtuvo para el problema 3, esto
+% es, su práctica tendrá que incluir una llamada a la funciónn
+% _convconm_ y posteriormente se tendrá que mostrar (mediante el
+% Publish) la gráfica tanto de las señales invlucradas como el resultado de
+% la convolución, y en esta última gráficara su resultado analitico, se
+% tendrá que incluir el resultado analitico. 
+% Modificación del código para la simulación numerica
+%
+% <include>convconm2.m</include>
+%
+% Si ejecutamos lo siguiente
+% 
+% <include>Ejercicio1BConvolucion.m</include>
+%
+% Gráfica de la convolución
+%
+% <<Convolucion2.png>>
+
+%% Analiticamente la función de la convolución es
+%
+% <<C2.png>>
+%
+%% PR06 e 
+% Para el PR06 reporte la grafica de la simulación númerica
+% de la correalción y compare con el resultado análitico que obtuvo para el problema e), esto
+% es, su práctica tendrá que incluir una llamada a la funciónn
+% _convconm_ y posteriormente se tendrá que mostrar (mediante el
+% Publish) la gráfica tanto de las señales involucradas como el resultado de
+% su correlación, y en esta última graficara su resultado analitico, se
+% tendrá que incluir el resultado analitico. 
+% Modificación del código para la simulación numerica
+%
+% <include>corrconm.m</include>
+%
+% Si ejecutamos lo siguiente
+% 
+% <include>Ejercicio3_Fun_Propia.m</include>
+%
+% Gráfica de la autocorrelación
+%
+% <<Convolucion3.png>>
+%
+%% Analiticamente la función de la correlación es
+%
+% <<C3.png>>
+%% PR06 f
+% Para el PR06 reporte la grafica de la simulación númerica
+% de la correalción y compare con el resultado análitico que obtuvo para el problema f), esto
+% es, su práctica tendrá que incluir una llamada a la funciónn
+% _convconm_ y posteriormente se tendrá que mostrar (mediante el
+% Publish) la gráfica tanto de las señales involucradas como el resultado de
+% su correlación, y en esta última graficara su resultado analitico, se
+% tendrá que incluir el resultado analitico. 
+% Modificación del código para la simulación numerica
+%
+% <include>corrconm.m</include>
+%
+% Si ejecutamos lo siguiente
+% 
+% <include>Ejercicio4_Fun_Propia.m</include>
+%
+% Gráfica de la autocorrelación
+%
+% <<Convolucion4.png>>
+%
+%% Analiticamente la función de la correlación es
+%
+% <<C4.png>>
+
+
+
+##### SOURCE END #####
+--></body></html>
