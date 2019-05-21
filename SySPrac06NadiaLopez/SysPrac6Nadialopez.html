@@ -1,0 +1,374 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Pr&aacute;ctica 6: Sistemas Diferenciales</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-05-21"><meta name="DC.source" content="Practica6.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Pr&aacute;ctica 6: Sistemas Diferenciales</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Portada</a></li><li><a href="#3">Introducci&oacute;n</a></li><li><a href="#5">Muestra la funci&oacute;n de transferencia del sistema</a></li><li><a href="#6">Muestra la respuesta al impulso (simb&oacute;lico, gr&aacute;fica)</a></li><li><a href="#7">Muestra la respuesta a entrada cero (simb&oacute;lico, gr&aacute;fica)</a></li><li><a href="#8">Muestra la respuesta a estado cero (simb&oacute;lico, gr&aacute;fica)</a></li><li><a href="#9">Muestra la respuesta total (simb&oacute;lico, gr&aacute;fica)</a></li><li><a href="#10">La respuesta total al escal&oacute;n con condiciones iniciales 0 (simb&oacute;lico, gr&aacute;fica)</a></li></ul></div><h2 id="1">Portada</h2><p>
+<div align="center">
+<img src="upiita.png"></br>
+<strong> INSTITUTO POLITÉCNICO NACIONAL </strong></br>
+<strong> UNIDAD PROFESIONAL INTERDISCIPLINARIA EN INGENIERÍA Y TECNOLOGÍAS AVANZADAS </strong></br></br></br>
+<strong><H1> SEÑALES Y SISTEMAS</H1></strong>
+</div>
+<div align="center">
+<FONT FACE="arial" SIZE=40 COLOR="black">
+<strong>Práctica 6 'Transformada de Laplace'</strong>
+</FONT>
+</div>
+<div align="center">
+<h3> Profesor: Dr. Rafael Martinez Martinez </h3>
+<h3> Integrantes del equipo: </h3>
+<h3>López Tirado Nadia Jaqueline</h3>
+<h3>Hernández Castillo Francisco</h3>
+<h3> Grupo 2TV1 </h3>
+</div>
+</p><h2 id="3">Introducci&oacute;n</h2><p>Segun la definicion de la funcion de transferenciatenemos que</p><p><img src="Practica6_eq12043819315732861810.png" alt="$$ H(S)=\frac{P(S)}{Q(S)}$$"></p><p>Si escribimos la ecuacion diferencial <img src="Practica6_eq09433690155023174579.png" alt="$y''+2y'+2y=x'+2x$"> la podemos</p><p>reescribir de la siguiente forma:</p><p><img src="Practica6_eq14245452135258616961.png" alt="$$(D^2 + 2D + 2)y(t)=(D+2) x(t)$$"></p><p>donde</p><p><img src="Practica6_eq14621918400787176137.png" alt="$Q(D)= D^2+2D+$"> y <img src="Practica6_eq05577670455227853974.png" alt="$P(D)=D+2$"></p><p>Entonces sustituyendo <img src="Practica6_eq14663648698641962978.png" alt="$S$"> en <img src="Practica6_eq13546311341933707491.png" alt="$P(D)$"> y <img src="Practica6_eq07919133147068235300.png" alt="$Q(D)$"> y aplicando la formula  <img src="Practica6_eq14219401440943603510.png" alt="$H(S)=\frac{P(S)}{Q(S)}$"></p><p>La funcion de transferencia es la siguiente</p><p><img src="Practica6_eq10283364662098448183.png" alt="$$ H(S)=\frac{P(S)}{Q(S)}=\frac{S+2}{S^2 + 2S +2}$$"></p><pre class="codeinput">syms <span class="string">t</span>;
+f=exp(-1*t).*heaviside(t);
+</pre><h2 id="5">Muestra la funci&oacute;n de transferencia del sistema</h2><p>Funci&oacute;n de transferencia</p><pre class="codeinput">disp(<span class="string">'Funcion de transferrencia'</span>)
+transferencia([2,2,1],[2,1])
+</pre><pre class="codeoutput">Funcion de transferrencia
+                     2
+2 Y(s) + 2 s Y(s) + s  Y(s)
+
+2 X(s) + s X(s)
+
+                     2
+2 Y(s) + 2 s Y(s) + s  Y(s)
+
+s + 2
+
+ 
+DESPEJAMOS H(s)
+ 
+H(s)=
+    s + 2
+------------
+ 2
+s  + 2 s + 2
+
+</pre><h2 id="6">Muestra la respuesta al impulso (simb&oacute;lico, gr&aacute;fica)</h2><p>Respuesta al impulso</p><pre class="codeinput">disp(<span class="string">'Respuesta al impulso'</span>)
+laplace2016a([2,2,1],[2,1],[0,0],[0],dirac(t),10) <span class="comment">%Con condiciones iniciales cero y entrada dirac(t)</span>
+</pre><pre class="codeoutput">Respuesta al impulso
+                     2
+2 Y(s) + 2 s Y(s) + s  Y(s)
+
+2 X(s) + s X(s)
+
+                     2
+2 Y(s) + 2 s Y(s) + s  Y(s)
+
+s + 2
+
+    s + 2
+------------
+ 2
+s  + 2 s + 2
+
+ 
+En el espacio de Laplace: 
+ 
+Y(s)=
+    s + 2
+------------
+ 2
+s  + 2 s + 2
+
+ 
+Aplicamos transformada inversa, asi la soluci&oacute;n es
+ 
+y(t)=
+exp(-t) (cos(t) + sin(t))
+
+</pre><img vspace="5" hspace="5" src="Practica6_01.png" alt=""> <h2 id="7">Muestra la respuesta a entrada cero (simb&oacute;lico, gr&aacute;fica)</h2><p>Respuesta a entrada cero</p><pre class="codeinput">disp(<span class="string">'Respuesta a entrada cero'</span>)
+laplace2016a([2,2,1],[0,0],[1,0],[0],f,10) <span class="comment">%Con condiciones iniciales y entrada cero</span>
+</pre><pre class="codeoutput">Respuesta a entrada cero
+                         2
+2 Y(s) - s + 2 s Y(s) + s  Y(s) - 2
+
+0
+
+                         2
+2 Y(s) - s + 2 s Y(s) + s  Y(s) - 2
+
+0
+
+    s + 2
+------------
+ 2
+s  + 2 s + 2
+
+ 
+En el espacio de Laplace: 
+ 
+Y(s)=
+    s + 2
+------------
+ 2
+s  + 2 s + 2
+
+ 
+Aplicamos transformada inversa, asi la soluci&oacute;n es
+ 
+y(t)=
+exp(-t) (cos(t) + sin(t))
+
+</pre><img vspace="5" hspace="5" src="Practica6_02.png" alt=""> <h2 id="8">Muestra la respuesta a estado cero (simb&oacute;lico, gr&aacute;fica)</h2><pre class="codeinput"><span class="comment">% Respuesta a estado cero</span>
+disp(<span class="string">'Respuesta a estado cero'</span>)
+laplace2016a([2,2,1],[2,1],[0,0],[0],f,10) <span class="comment">%Con conddiciones iniciales cero y entrada f</span>
+</pre><pre class="codeoutput">Respuesta a estado cero
+                     2
+2 Y(s) + 2 s Y(s) + s  Y(s)
+
+2 X(s) + s X(s)
+
+                     2
+2 Y(s) + 2 s Y(s) + s  Y(s)
+
+  s       2
+----- + -----
+s + 1   s + 1
+
+       s + 2
+-------------------
+ 3      2
+s  + 3 s  + 4 s + 2
+
+ 
+En el espacio de Laplace: 
+ 
+Y(s)=
+  1           s
+----- - ------------
+s + 1    2
+        s  + 2 s + 2
+
+ 
+Aplicamos transformada inversa, asi la soluci&oacute;n es
+ 
+y(t)=
+exp(-t) - exp(-t) (cos(t) - sin(t))
+
+</pre><img vspace="5" hspace="5" src="Practica6_03.png" alt=""> <h2 id="9">Muestra la respuesta total (simb&oacute;lico, gr&aacute;fica)</h2><p>Respuesta total</p><pre class="codeinput">disp(<span class="string">'Respuesta total'</span>)
+laplace2016a([2,2,1],[2,1],[1,0],[0],f,10) <span class="comment">%Condiciones iniciales y entrada f</span>
+</pre><pre class="codeoutput">Respuesta total
+                         2
+2 Y(s) - s + 2 s Y(s) + s  Y(s) - 2
+
+2 X(s) + s X(s)
+
+                         2
+2 Y(s) - s + 2 s Y(s) + s  Y(s) - 2
+
+  s       2
+----- + -----
+s + 1   s + 1
+
+     2
+    s  + 4 s + 4
+-------------------
+ 3      2
+s  + 3 s  + 4 s + 2
+
+ 
+En el espacio de Laplace: 
+ 
+Y(s)=
+  1           2
+----- + ------------
+s + 1    2
+        s  + 2 s + 2
+
+ 
+Aplicamos transformada inversa, asi la soluci&oacute;n es
+ 
+y(t)=
+exp(-t) + 2 exp(-t) sin(t)
+
+</pre><img vspace="5" hspace="5" src="Practica6_04.png" alt=""> <h2 id="10">La respuesta total al escal&oacute;n con condiciones iniciales 0 (simb&oacute;lico, gr&aacute;fica)</h2><p>Respuesta a escal&oacute;n en condiciones cero</p><pre class="codeinput">disp(<span class="string">'Respuesta al escal&oacute;n en estado cero'</span>)
+laplace2016a([2,2,1],[2,1],[0,0],[0],heaviside(t),10)
+</pre><pre class="codeoutput">Respuesta al escal&oacute;n en estado cero
+                     2
+2 Y(s) + 2 s Y(s) + s  Y(s)
+
+2 X(s) + s X(s)
+
+                     2
+2 Y(s) + 2 s Y(s) + s  Y(s)
+
+2
+- + 1
+s
+
+     s + 2
+---------------
+ 3      2
+s  + 2 s  + 2 s
+
+ 
+En el espacio de Laplace: 
+ 
+Y(s)=
+1       s + 1
+- - ------------
+s    2
+    s  + 2 s + 2
+
+ 
+Aplicamos transformada inversa, asi la soluci&oacute;n es
+ 
+y(t)=
+1 - exp(-t) cos(t)
+
+</pre><img vspace="5" hspace="5" src="Practica6_05.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Práctica 6: Sistemas Diferenciales
+%
+%% Portada
+%%
+% <html>
+% <div align="center">
+% <img src="upiita.png"></br>
+% <strong> INSTITUTO POLITÉCNICO NACIONAL </strong></br>
+% <strong> UNIDAD PROFESIONAL INTERDISCIPLINARIA EN INGENIERÍA Y TECNOLOGÍAS AVANZADAS </strong></br></br></br>
+% <strong><H1> SEÑALES Y SISTEMAS</H1></strong>
+% </div>
+% <div align="center"> 
+% <FONT FACE="arial" SIZE=40 COLOR="black">
+% <strong>Práctica 6 'Transformada de Laplace'</strong>
+% </FONT>
+% </div>
+% <div align="center">
+% <h3> Profesor: Dr. Rafael Martinez Martinez </h3>
+% <h3> Integrantes del equipo: </h3>
+% <h3>López Tirado Nadia Jaqueline</h3>
+% <h3>Hernández Castillo Francisco</h3>
+% <h3> Grupo 2TV1 </h3>
+% </div>
+% </html>
+%% Introducción
+%
+% Segun la definicion de la funcion de transferenciatenemos que 
+%
+% $$ H(S)=\frac{P(S)}{Q(S)}$$
+%
+% Si escribimos la ecuacion diferencial $y''+2y'+2y=x'+2x$ la podemos
+%
+% reescribir de la siguiente forma: 
+%
+% $$(D^2 + 2D + 2)y(t)=(D+2) x(t)$$
+%
+% donde 
+%
+% $Q(D)= D^2+2D+$ y $P(D)=D+2$ 
+%
+% Entonces sustituyendo $S$ en $P(D)$ y $Q(D)$ y aplicando la formula  $H(S)=\frac{P(S)}{Q(S)}$
+%
+% La funcion de transferencia es la siguiente 
+%
+% $$ H(S)=\frac{P(S)}{Q(S)}=\frac{S+2}{S^2 + 2S +2}$$ 
+
+
+
+%%
+syms t;
+f=exp(-1*t).*heaviside(t);
+
+
+%% Muestra la función de transferencia del sistema
+% Función de transferencia
+disp('Funcion de transferrencia')
+transferencia([2,2,1],[2,1])
+
+%% Muestra la respuesta al impulso (simbólico, gráfica)
+% Respuesta al impulso
+disp('Respuesta al impulso')
+laplace2016a([2,2,1],[2,1],[0,0],[0],dirac(t),10) %Con condiciones iniciales cero y entrada dirac(t)
+
+%% Muestra la respuesta a entrada cero (simbólico, gráfica)
+% Respuesta a entrada cero
+disp('Respuesta a entrada cero')
+laplace2016a([2,2,1],[0,0],[1,0],[0],f,10) %Con condiciones iniciales y entrada cero
+
+%% Muestra la respuesta a estado cero (simbólico, gráfica)
+
+% Respuesta a estado cero
+disp('Respuesta a estado cero')
+laplace2016a([2,2,1],[2,1],[0,0],[0],f,10) %Con conddiciones iniciales cero y entrada f
+
+%% Muestra la respuesta total (simbólico, gráfica)
+% Respuesta total
+disp('Respuesta total')
+laplace2016a([2,2,1],[2,1],[1,0],[0],f,10) %Condiciones iniciales y entrada f
+
+%% La respuesta total al escalón con condiciones iniciales 0 (simbólico, gráfica)
+% Respuesta a escalón en condiciones cero
+disp('Respuesta al escalón en estado cero')
+laplace2016a([2,2,1],[2,1],[0,0],[0],heaviside(t),10)
+ 
+
+
+##### SOURCE END #####
+--></body></html>
